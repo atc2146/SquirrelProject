@@ -4,15 +4,12 @@ Squirrel Tracker is a Django-based web application
 
 ## Description
 
-The following has been implemented
-
-```bash
-pip install foobar
-```
+The following has been implemented:  
+blah
 
 ## Group Name and Section
 
-Project Group 69
+Project Group 69  
 Section 002
 
 ## List of UNIs
