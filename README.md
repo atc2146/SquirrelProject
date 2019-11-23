@@ -10,7 +10,7 @@ blah
 ## Group Name and Section
 
 Project Group 69  
-Section 002
+Section 2 
 
 ## List of UNIs
 
