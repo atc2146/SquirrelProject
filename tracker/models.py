@@ -10,6 +10,12 @@ class Sighting(models.Model):
     longitude = models.DecimalField(max_digits=20, decimal_places=20)
 
     
+    unique_squirrel_id = models.CharField(
+        max_length=20,
+        unique=True,
+     )
+
+
     AM = 'AM'
     PM = 'PM'
 
@@ -32,3 +38,20 @@ class Sighting(models.Model):
 
     def __str__(self):
         return 'str defn'
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
