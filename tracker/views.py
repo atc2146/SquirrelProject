@@ -20,3 +20,5 @@ def add(request):
 def stats(request):
     return HttpResponse("stats view")
 
+def update(request):
+    return HttpResponse("update view")
