@@ -34,7 +34,8 @@ class Sighting(models.Model):
             )
 
     date = models.DateField('date sighted')
-    
+   
+    #add more features below
 
     def __str__(self):
         return 'str defn'
