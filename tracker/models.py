@@ -35,7 +35,52 @@ class Sighting(models.Model):
 
     date = models.DateField('date sighted')
    
-    #add more features below
+    age = models.IntegerField()
+
+    primary_fur_color = models.CharField(
+        max_length=20,
+        unique=True,
+     )
+
+    location = models.CharField(
+        max_length=20,
+        unique=True,
+     )
+
+    specific_location = models.CharField(
+        max_length=20,
+        unique=True,
+     )
+
+    running = models.BooleanField()
+    chasing = models.BooleanField()
+    climbing = models.BooleanField()
+    eating = models.BooleanField()
+    foraging = models.BooleanField()
+
+    other_activites = models.CharField(
+        max_length=20,
+        unique=True,
+     )
+
+    kuks = models.BooleanField()
+    quaas = models.BooleanField()
+    moans = models.BooleanField()
+    
+    tail_flags = models.CharField(
+        max_length=20,
+        unique=True,
+     )
+
+    tail_twitches = models.BooleanField()
+    approaches = models.BooleanField()
+    indifferent = models.BooleanField()
+
+    runs_from = models.CharField(
+        max_length=20,
+        unique=True,
+     )
+    
 
     def __str__(self):
         return 'str defn'
