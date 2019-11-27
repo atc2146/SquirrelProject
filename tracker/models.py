@@ -35,7 +35,7 @@ class Sighting(models.Model):
 
     date = models.DateField('date sighted')
    
-    age = models.IntegerField(max_length=3)
+    age = models.IntegerField()
 
     primary_fur_color = models.CharField(
         max_length=20,
