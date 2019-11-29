@@ -98,8 +98,8 @@ class Sighting(models.Model):
     eating = models.BooleanField(null=True)
     foraging = models.BooleanField(null=True)
 
-    other_activites = models.CharField(
-        max_length=255,
+    other_activities = models.TextField(
+        #max_length=255,
         blank=True,
         default='',
         #unique=True,
