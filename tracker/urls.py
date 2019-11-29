@@ -1,13 +1,17 @@
 from django.urls import path
 
+
+
 from . import views
+
+
 
 urlpatterns = [
     # ex: /sightings/
     path('sightings', views.index, name='index'),
     
     # ex: /sightings/<unique-squirrel-id>
-    path('sightings/<str:unique-squirrel-id>', views.update, name='update'),
+    path('sightings/<slug:unique_squirrel_id>/', views.update, name='update'),
 
     # ex: /sightings/add
     path('sightings/add', views.add, name='add'),

@@ -6,15 +6,15 @@ from django.utils.translation import gettext as _
 
 
 class Sighting(models.Model):
-    latitude = models.DecimalField(max_digits=20, decimal_places=20)
-    longitude = models.DecimalField(max_digits=20, decimal_places=20)
+    latitude = models.DecimalField(max_digits=35, decimal_places=25)
+    longitude = models.DecimalField(max_digits=35, decimal_places=25)
 
-    
-    unique_squirrel_id = models.CharField(
-        max_length=20,
-        unique=True,
+    unique_squirrel_id = models.SlugField(
+        max_length=50,
+        blank=True,
+        default='',
+        #unique=True,
      )
-
 
     AM = 'AM'
     PM = 'PM'
@@ -23,7 +23,7 @@ class Sighting(models.Model):
         (AM, 'AM'),
         (PM, 'PM'),
      )
-    
+
     shift = models.CharField(
             help_text=_('Time of sighting'),
             max_length=2,
@@ -34,68 +34,86 @@ class Sighting(models.Model):
             )
 
     date = models.DateField('date sighted')
-   
-    age = models.IntegerField()
+
+    ADULT = 'Adult'
+    JUVENILE = 'Juvenile'
+
+    AGE_CHOICES = (
+        (ADULT, 'Adult'),
+        (JUVENILE, 'Juvenile'),
+     )
+
+    age = models.CharField(
+            help_text=_('Age of squirrel'),
+            max_length=10,
+            choices=AGE_CHOICES,
+            blank=True,
+            default='',
+            )
+
+    GRAY = 'Gray'
+    CINNAMON = 'Cinnamon'
+    BLACK = 'Black'
+
+    PRIMARY_FUR_COLOR_CHOICES = (
+        (GRAY, 'Gray'),
+        (CINNAMON, 'Cinnamon'),
+        (BLACK, 'Black'),
+     )
 
     primary_fur_color = models.CharField(
+        help_text=_('Fur color of squirrel'),
         max_length=20,
-        unique=True,
+        choices=PRIMARY_FUR_COLOR_CHOICES,
+        blank=True,
+        default = '',
+        #unique=True,
+     )
+
+    GROUND_PLANE = 'Ground Plane'
+    ABOVE_GROUND = 'Above Ground'
+
+    LOCATION_CHOICES = (
+        (GROUND_PLANE, 'Ground Plane'),
+        (ABOVE_GROUND, 'Above Ground'),
      )
 
     location = models.CharField(
+        help_text=_('Location of where the squirrel was when first sighted'),
         max_length=20,
-        unique=True,
+        choices=LOCATION_CHOICES,
+        blank=True,
+        default = '',
      )
 
     specific_location = models.CharField(
-        max_length=20,
-        unique=True,
+        max_length=255,
+        blank=True,
+        default = '',
      )
 
-    running = models.BooleanField()
-    chasing = models.BooleanField()
-    climbing = models.BooleanField()
-    eating = models.BooleanField()
-    foraging = models.BooleanField()
+    running = models.BooleanField(null=True)
+    chasing = models.BooleanField(null=True)
+    climbing = models.BooleanField(null=True)
+    eating = models.BooleanField(null=True)
+    foraging = models.BooleanField(null=True)
 
     other_activites = models.CharField(
-        max_length=20,
-        unique=True,
+        max_length=255,
+        blank=True,
+        default='',
+        #unique=True,
      )
 
-    kuks = models.BooleanField()
-    quaas = models.BooleanField()
-    moans = models.BooleanField()
-    
-    tail_flags = models.CharField(
-        max_length=20,
-        unique=True,
-     )
-
-    tail_twitches = models.BooleanField()
-    approaches = models.BooleanField()
-    indifferent = models.BooleanField()
-
-    runs_from = models.CharField(
-        max_length=20,
-        unique=True,
-     )
-    
+    kuks = models.BooleanField(null=True)
+    quaas = models.BooleanField(null=True)
+    moans = models.BooleanField(null=True)
+    tail_flags = models.BooleanField(null=True)
+    tail_twitches = models.BooleanField(null=True)
+    approaches = models.BooleanField(null=True)
+    indifferent = models.BooleanField(null=True)
+    runs_from = models.BooleanField(null=True)
 
     def __str__(self):
-        return 'str defn'
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return self.unique_squirrel_id
 
