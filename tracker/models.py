@@ -1,4 +1,5 @@
 from django.db import models
+#from django.forms import ModelForm
 from django.utils.translation import gettext as _
 
 # Create your models here.
@@ -116,4 +117,5 @@ class Sighting(models.Model):
 
     def __str__(self):
         return self.unique_squirrel_id
+
 

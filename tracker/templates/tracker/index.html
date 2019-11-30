@@ -1,0 +1,9 @@
+{% if squirrels %}
+    <ul>
+    {% for squirrel in squirrels %}
+        <li><a href="{% url 'tracker:update' squirrel.unique_squirrel_id %}">{{ squirrel.unique_squirrel_id }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No sightings.</p>
+{% endif %}
