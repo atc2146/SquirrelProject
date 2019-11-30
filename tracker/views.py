@@ -48,7 +48,22 @@ def add(request):
 
 
 def stats(request):
-    return HttpResponse("stats view")
+    """
+    docstring to be completed
+    """
+    sightings_total = Sighting.objects.count()
+    sightings_adult = Sighting.objects.filter(age='Adult').count()
+    #percent_adult = round(sightings_adult/sightings_total * 100)    
+    
+    context = {
+                'sightings_total': sightings_total,
+                'sightings_adult': sightings_adult,
+               # 'percent_adult': percent_adult,
+            }
+    return render(request, 'tracker/stats.html', context)
+
+
+
 
 def update(request, unique_squirrel_id):
     squirrel = Sighting.objects.get(unique_squirrel_id=unique_squirrel_id)
