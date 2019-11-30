@@ -1,4 +1,5 @@
 from django.db import models
+#from django.forms import ModelForm
 from django.utils.translation import gettext as _
 
 # Create your models here.
@@ -98,8 +99,8 @@ class Sighting(models.Model):
     eating = models.BooleanField(null=True)
     foraging = models.BooleanField(null=True)
 
-    other_activites = models.CharField(
-        max_length=255,
+    other_activities = models.TextField(
+        #max_length=255,
         blank=True,
         default='',
         #unique=True,
@@ -116,4 +117,5 @@ class Sighting(models.Model):
 
     def __str__(self):
         return self.unique_squirrel_id
+
 
