@@ -108,7 +108,7 @@ def stats(request):
             }
     return render(request, 'tracker/stats.html', context)
 
-
+# might need to change this (don't use DetailView) when dealing with forms
 class UpdateView(generic.DetailView):
     """
     Display an individual :model:`tracker.Sighting`.
@@ -129,27 +129,9 @@ class UpdateView(generic.DetailView):
     context_object_name = 'sighting'
     template_name = 'tracker/update.html'
     
+    
+    def get_context_data(self, **kwargs):
+        context = super(UpdateView, self).get_context_data(**kwargs)
+        context['form'] = SightingForm()
+        return context    
 
-
-# delete this
-def update(request, unique_squirrel_id):
-    """
-    Display an individual :model:`tracker.Sighting`.
-
-    **Context**
-
-    ``sighting``
-        An instance of :model:`tracker.Sighting`.
-
-    **Template:**
-
-    :template:`tracker/update.html`
-
-    """
-    sighting = get_object_or_404(Sighting, unique_squirrel_id=unique_squirrel_id)
-    context = {
-            'sighting': sighting,
-            }
-    return render(request, 'tracker/update.html', context)
-    #squirrel = Sighting.objects.get(unique_squirrel_id=unique_squirrel_id)
-    #return HttpResponse("Squirrel ID: " + str(squirrel))

@@ -11,14 +11,37 @@
     <title>Squirrel Sightings - All</title>
   </head>
   <body>
-  
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark default">
+  <a class="navbar-brand">Squirrel Sightings</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'tracker:index' %}">Home</a>
+      </li>      
+	  <li class="nav-item">
+        <a class="nav-link" href="{% url 'tracker:add' %}">Add sighting <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'tracker:stats' %}">Stats</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'tracker:map' %}">Map</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
   <main role="main" class="container">
 	<div class="starter-template">
-	
+	<br>	
 	<h1>Squirrel Sightings - All</h1>
 	<br>
-  <h2><a href="{% url 'tracker:add' %}">Add a squirrel (click here)</a></h2>
-	<br>
+ 	 <h2><a href="{% url 'tracker:add' %}">Add a squirrel sighting (click here)</a></h2>
 	<br>
   
   <table class="table table-sm table-striped">
@@ -33,7 +56,7 @@
 	{% for sighting in sightings %}
 	{# Each "sighting" is a Sighting model object. #}    
 	<tr>
-      <td>{{sighting.unique_squirrel_id}}</th>
+      <td>{{sighting.unique_squirrel_id}}</td>
       <td>{{sighting.date}}</td>
       <td><a href="{% url 'tracker:update' sighting.unique_squirrel_id %}">Edit</a></td>
     </tr>
@@ -49,7 +72,7 @@
 					<a href="?page={{ page_obj.previous_page_number }}">previous</a>
 				{% endif %}
 				<span class="current">
-					Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+					Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
 				</span>
 				{% if page_obj.has_next %}
 					<a href="?page={{ page_obj.next_page_number }}">next</a>
