@@ -114,6 +114,9 @@ class Sighting(models.Model):
     approaches = models.BooleanField(null=True)
     indifferent = models.BooleanField(null=True)
     runs_from = models.BooleanField(null=True)
+    
+    class Meta:
+        get_latest_by = ['date']
 
     def __str__(self):
         return self.unique_squirrel_id
