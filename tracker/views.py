@@ -2,16 +2,17 @@ from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Sighting
-from .forms import SightingForm
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 
+from .models import Sighting
+from .forms import SightingForm
 # Create your views here
 
-class IndexView(generic.ListView):
+
+class SightingIndexView(generic.ListView):
     """
-    Display all onjects in :model:`tracker.Sighting`.
+    Display all objects in :model:`tracker.Sighting`.
 
     **Context**
 
@@ -38,30 +39,32 @@ def map(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def add(request):
-    """
-    DOCSTRING TO BE FILLED
-    """
-    if request.method == "POST":
-        form = SightingForm(request.POST)
-        #try:
-        if form.is_valid():
-            sighting = form.save()
-            # Always return an HttpResponseRedirect after successfully dealing
-            # with POST data. This prevents data from being posted twice if a
-            # user hits the Back button.            
-            return HttpResponseRedirect(reverse('tracker:update', args=(sighting.unique_squirrel_id,)))
-        else:
-        # Redisplay the add form
-            return render(request, 'tracker/add.html',{
-                'form': form,
-                'error_message': "Error occured while adding sighting",
-                })
-    else:     
-        form = SightingForm()    
-        return render(request, 'tracker/add.html', {'form': form,})
+
+class SightingCreateView(generic.CreateView):
+    template_name = 'tracker/add.html'
+    form_class = SightingForm
+
+class SightingUpdateView(generic.UpdateView):
+    model = Sighting
+    fields = '__all__'#('unique_squirrel_id',)
+    template_name = 'tracker/update.html'
+    slug_field = 'unique_squirrel_id'
+    slug_url_kwarg = 'unique_squirrel_id'
+    success_url = reverse_lazy('tracker:index') #change
+
+    context_object_name = 'sighting'
+
+    def form_valid(self, form):
+        self.update_instance(form.cleaned_data)
+        return super(SightingUpdateView,self).form_valid(form)
+
+    #udf
+    def update_instance(self, valid_data):
+        print(valid_data)
+        pass
 
 #rewrite this?
+#use generic view?
 def stats(request):
     """
     docstring to be completed
@@ -108,6 +111,38 @@ def stats(request):
             }
     return render(request, 'tracker/stats.html', context)
 
+
+
+
+
+# 
+# DELETE EVERYTHING BEFORE (SAVED BELOW FOR COMPLETENESS)
+
+# delete this
+class UpdateSightingFormView(generic.FormView):
+    form_class = SightingForm
+    template_name = 'tracker/update.html'
+    success_url = reverse_lazy('tracker') #change
+    
+    #model = Sighting
+    #slug_field = 'unique_squirrel_id'
+    #slug_url_kwarg = 'unique_squirrel_id'    
+    #context_object_name = 'sighting'
+
+    def form_valid(self, form):
+        self.add_instance(form.cleaned_data)
+        return super(UpdateSightingFormView,self).form_valid(form)
+    
+    #udf
+    def add_instance(self, valid_data):
+        print(valid_data)
+        pass
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateSightingFormView, self).get_context_data(**kwargs)
+        context['sighting'] = 'hello'
+        return context
+
 # might need to change this (don't use DetailView) when dealing with forms
 class UpdateView(generic.DetailView):
     """
@@ -122,16 +157,39 @@ class UpdateView(generic.DetailView):
 
     :template:`tracker/update.html`
 
-    """    
+    """
     model = Sighting
     slug_field = 'unique_squirrel_id'
     slug_url_kwarg = 'unique_squirrel_id'
     context_object_name = 'sighting'
     template_name = 'tracker/update.html'
-    
-    
+
+
     def get_context_data(self, **kwargs):
         context = super(UpdateView, self).get_context_data(**kwargs)
         context['form'] = SightingForm()
-        return context    
+        return context
 
+#delete this
+def add(request):
+    """
+    DOCSTRING TO BE FILLED
+    """
+    if request.method == "POST":
+        form = SightingForm(request.POST)
+        #try:
+        if form.is_valid():
+            sighting = form.save()
+            # Always return an HttpResponseRedirect after successfully dealing
+            # with POST data. This prevents data from being posted twice if a
+            # user hits the Back button.            
+            return HttpResponseRedirect(reverse('tracker:update', args=(sighting.unique_squirrel_id,)))
+        else:
+        # Redisplay the add form
+            return render(request, 'tracker/add.html',{
+                'form': form,
+                'error_message': "Error occured while adding sighting",
+                })
+    else:
+        form = SightingForm()
+        return render(request, 'tracker/add.html', {'form': form,})

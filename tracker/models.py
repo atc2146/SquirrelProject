@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 #from django.forms import ModelForm
 from django.utils.translation import gettext as _
 
@@ -117,6 +118,11 @@ class Sighting(models.Model):
     
     class Meta:
         get_latest_by = ['date']
+
+    
+    # path upon successfull CreateView
+    def get_absolute_url(self):
+        return reverse('tracker:update', args=[self.unique_squirrel_id])
 
     def __str__(self):
         return self.unique_squirrel_id

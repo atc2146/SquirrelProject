@@ -82,7 +82,7 @@
     <p class="lead">Modify values below and submit</p>
 	<p>Unique Squirrel ID: {{sighting.unique_squirrel_id}}</p>
 
-	<form action="{% url 'tracker:update' sighting.unique_squirrel_id %}" method="post">
+	<form action="" method="post">
 			{% csrf_token %}
 			{{ form.as_p }}
 	   <br>
