@@ -31,35 +31,39 @@ class Command(BaseCommand):
             for row in my_reader:
 
                 date_formatted=datetime.strptime(row['Date'], '%m%d%Y').date()
+            
+                try:
+                    Sighting.objects.create(
+                            latitude=row['Y'],
+                            longitude=row['X'],
+                            unique_squirrel_id=row['Unique Squirrel ID'],
+                            shift=row['Shift'],
 
-                Sighting.objects.create(
-                        latitude=row['Y'],
-                        longitude=row['X'],
-                        unique_squirrel_id=row['Unique Squirrel ID'],
-                        shift=row['Shift'],
+                            date=date_formatted,
 
-                        date=date_formatted,
-
-                        age=row['Age'],
-                        primary_fur_color=row['Primary Fur Color'],
-                        location=row['Location'],
-                        specific_location=row['Specific Location'],
-                        running=convert_boolean(row['Running']),
-                        chasing=convert_boolean(row['Chasing']),
-                        climbing=convert_boolean(row['Climbing']),
-                        eating=convert_boolean(row['Eating']),
-                        foraging=convert_boolean(row['Foraging']),
-                        other_activities=row['Other Activities'],
-                        kuks=convert_boolean(row['Kuks']),
-                        quaas=convert_boolean(row['Quaas']),
-                        moans=convert_boolean(row['Moans']),
-                        tail_flags=convert_boolean(row['Tail flags']),
-                        tail_twitches=convert_boolean(row['Tail twitches']),
-                        approaches=convert_boolean(row['Approaches']),
-                        indifferent=convert_boolean(row['Indifferent']),
-                        runs_from=convert_boolean(row['Runs from'])
-                        )
-                count = count+1
+                            age=row['Age'],
+                            primary_fur_color=row['Primary Fur Color'],
+                            location=row['Location'],
+                            specific_location=row['Specific Location'],
+                            running=convert_boolean(row['Running']),
+                            chasing=convert_boolean(row['Chasing']),
+                            climbing=convert_boolean(row['Climbing']),
+                            eating=convert_boolean(row['Eating']),
+                            foraging=convert_boolean(row['Foraging']),
+                            other_activities=row['Other Activities'],
+                            kuks=convert_boolean(row['Kuks']),
+                            quaas=convert_boolean(row['Quaas']),
+                            moans=convert_boolean(row['Moans']),
+                            tail_flags=convert_boolean(row['Tail flags']),
+                            tail_twitches=convert_boolean(row['Tail twitches']),
+                            approaches=convert_boolean(row['Approaches']),
+                            indifferent=convert_boolean(row['Indifferent']),
+                            runs_from=convert_boolean(row['Runs from'])
+                            )
+                    count = count+1
+                except Exception as e:
+                    self.stdout.write('Discarded record b/c: ' + str(e)) 
+                    self.stdout.write("Squirrel ID: %s" % row['Unique Squirrel ID'])
 
         self.stdout.write("File path: %s" % path)
         self.stdout.write("rows inserted: %s " % count)
