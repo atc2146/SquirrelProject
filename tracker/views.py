@@ -36,7 +36,8 @@ class SightingIndexView(generic.ListView):
 
 def map(request):
     template = loader.get_template('tracker/map.html')
-    context = {}
+    sightings = Sighting.objects.all()[:50]
+    context = {'sightings' : sightings,}
     return HttpResponse(template.render(context, request))
 
 
