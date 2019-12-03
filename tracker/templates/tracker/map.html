@@ -25,7 +25,7 @@
   </head>
   <body>
     <div id="map" class="container-fluid h-100"></div>
-    
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -53,7 +53,7 @@
           var point_lat_lon = [{{ sighting.latitude }}, {{ sighting.longitude }}];
           var marker = L.marker(point_lat_lon).addTo(map);
         {% endfor %}
-	L.marker([40.782091, -73.964285]).addTo(map);
+        L.marker([40.782091, -73.964285]).addTo(map);
     </script>
   </body>
 </html>
