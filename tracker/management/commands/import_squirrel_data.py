@@ -33,8 +33,8 @@ class Command(BaseCommand):
                 date_formatted=datetime.strptime(row['Date'], '%m%d%Y').date()
 
                 Sighting.objects.create(
-                        latitude=row['X'],
-                        longitude=row['Y'],
+                        latitude=row['Y'],
+                        longitude=row['X'],
                         unique_squirrel_id=row['Unique Squirrel ID'],
                         shift=row['Shift'],
 
