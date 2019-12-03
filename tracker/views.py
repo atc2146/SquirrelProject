@@ -25,7 +25,7 @@ class SightingIndexView(generic.ListView):
 
     """
     model = Sighting
-    paginate_by = 40
+    paginate_by = 3500
     context_object_name = 'sightings'  # Default: object_list
     template_name = "tracker/index.html" # Default: <app_label>/<model_name>_list.html
     
