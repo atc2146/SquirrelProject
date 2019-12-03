@@ -15,7 +15,7 @@ class Sighting(models.Model):
         max_length=50,
         blank=True,
         default='',
-        #unique=True,
+        unique=True,
      )
 
     AM = 'AM'
