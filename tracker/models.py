@@ -121,8 +121,8 @@ class Sighting(models.Model):
 
     
     # path upon successfull CreateView
-    def get_absolute_url(self):
-        return reverse('tracker:update', args=[self.unique_squirrel_id])
+    # def get_absolute_url(self):
+    #    return reverse('tracker:update', args=[self.unique_squirrel_id])
 
     def __str__(self):
         return self.unique_squirrel_id
