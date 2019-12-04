@@ -24,15 +24,11 @@ class SightingIndexView(generic.ListView):
     :template:`tracker/index.html`
 
     """
-    model = Sighting
+    #context_object_name = 'sighting_list'  # Default: object_list or <model_name>_list (i.e. sighting_list)
+    template_name = 'tracker/index.html'# Default: <app_label>/<model_name>_list.html
     paginate_by = 3500
-    context_object_name = 'sightings'  # Default: object_list
-    template_name = "tracker/index.html" # Default: <app_label>/<model_name>_list.html
+    queryset = Sighting.objects.order_by('-date') # Specifying the queryset is the same as specyfying the model
     
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.order_by('-date')
-
 
 def map(request):
     template = loader.get_template('tracker/map.html')
@@ -53,9 +49,10 @@ class SightingUpdateView(generic.UpdateView):
     slug_field = 'unique_squirrel_id'
     slug_url_kwarg = 'unique_squirrel_id'
     #success_url = reverse_lazy('tracker:index') #change
-    context_object_name = 'sighting'
+    #context_object_name = 'sighting'
 
     def form_valid(self, form):
+        """If the form is valid"""
         if 'update_sighting' in self.request.POST:
             self.update_instance(form.cleaned_data)
             return super(SightingUpdateView,self).form_valid(form)
@@ -63,12 +60,16 @@ class SightingUpdateView(generic.UpdateView):
             form.instance.delete()
             return HttpResponseRedirect(reverse('tracker:index', args=()))
 
+    def get_success_url(self):
+        """Return the URL to redirect to after processing a valid form."""
+        unique_squirrel_id = self.get_object().unique_squirrel_id
+        url = reverse_lazy('tracker:update', args=(unique_squirrel_id,))
+        return url
+
     # user defined function
     def update_instance(self, valid_data):
         print(valid_data)
         pass
-    
-
 
 
 #rewrite this?
