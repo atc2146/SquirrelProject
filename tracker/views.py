@@ -71,8 +71,7 @@ class SightingUpdateView(generic.UpdateView):
         print(valid_data)
         pass
 
-
-#rewrite this?
+#rewrite this? is it done?
 #use generic view?
 def stats(request):
     """
