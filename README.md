@@ -1,11 +1,10 @@
 # Squirrel Tracker
 
-Squirrel Tracker is a Django-based web application
+Squirrel Tracker is a Django-based web application which displays Central park suirrel sightings. 
 
 ## Description
 
-The following has been implemented:  
-blah
+The application take squirrel sighting data and displays their exact location on a map of Central Park. Functionality is included to add sightings and modify existing ones. 
 
 ## Group Name and Section
 
