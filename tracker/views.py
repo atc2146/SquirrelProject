@@ -85,7 +85,11 @@ def stats(request):
    
     # handle when nothing in db
     # if  no records  first() will return None, latest() will raise DoesNotExist exception
-    latest_date = Sighting.objects.order_by('date').latest('date').date
+    try:
+        latest_date = Sighting.objects.order_by('date').latest('date').date
+    except Exception as e:
+        self.stdout('No records in database:\n' + str(e))
+
     earliest_date = Sighting.objects.order_by('date').earliest().date
     most_common_date_query = Sighting.objects.values('date').annotate(total=Count('date')).order_by('-total')[0]
     #most_common_date = Sighting.objects.annotate(c=Count('date')).order_by('-c')[:1]

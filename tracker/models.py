@@ -3,17 +3,45 @@ from django.urls import reverse
 #from django.forms import ModelForm
 from django.utils.translation import gettext as _
 
-# Create your models here.
-
 
 
 class Sighting(models.Model):
+    """
+    Sighting model for storing squirrel sightings information in db
+
+    **Model Fields**
+
+    Latitude
+    Longitude
+    Unique Squirrel ID
+    Shift
+    Date
+    Age
+    Primary Fur Color
+    Location
+    Specific Location
+    Running
+    Chasing
+    Climbing
+    Eating
+    Foraging
+    Other Activities
+    Kuks
+    Quaas
+    Moans
+    Tail flags
+    Tail twitches
+    Approaches
+    Indifferent
+    Runs from
+
+    """
     latitude = models.DecimalField(max_digits=35, decimal_places=25)
     longitude = models.DecimalField(max_digits=35, decimal_places=25)
 
     unique_squirrel_id = models.SlugField(
         max_length=50,
-        blank=True,
+        blank=False,
         default='',
         unique=True,
      )
@@ -89,32 +117,34 @@ class Sighting(models.Model):
      )
 
     specific_location = models.CharField(
+        help_text=_('Specific location of the sighting'),
         max_length=255,
         blank=True,
         default = '',
      )
 
-    running = models.BooleanField(null=True)
-    chasing = models.BooleanField(null=True)
-    climbing = models.BooleanField(null=True)
-    eating = models.BooleanField(null=True)
-    foraging = models.BooleanField(null=True)
+    running = models.BooleanField(help_text=_('Is the squirrel running?'), default=False)
+    chasing = models.BooleanField(help_text=_('Is the squirrel chasing?'), default=False)
+    climbing = models.BooleanField(help_text=_('Is the squirrel climbing?'), default=False)
+    eating = models.BooleanField(help_text=_('Is the squirrel eating?'), default=False)
+    foraging = models.BooleanField(help_text=_('Is the squirrel foraging?'), default=False)
 
     other_activities = models.TextField(
+        help_text=_('What other activites is the squirrel doing?'),
         #max_length=255,
         blank=True,
         default='',
         #unique=True,
      )
 
-    kuks = models.BooleanField(null=True)
-    quaas = models.BooleanField(null=True)
-    moans = models.BooleanField(null=True)
-    tail_flags = models.BooleanField(null=True)
-    tail_twitches = models.BooleanField(null=True)
-    approaches = models.BooleanField(null=True)
-    indifferent = models.BooleanField(null=True)
-    runs_from = models.BooleanField(null=True)
+    kuks = models.BooleanField(help_text=_('Is the squirrel kuking?'), default=False)
+    quaas = models.BooleanField(help_text=_('Is the squirrel quaaing?'), default=False)
+    moans = models.BooleanField(help_text=_('Is the squirrel moaning?'), default=False)
+    tail_flags = models.BooleanField(help_text=_('Does the squirrel have a tail flag?'), default=False)
+    tail_twitches = models.BooleanField(help_text=_('Is the squirrel\'s tail twitching?'), default=False)
+    approaches = models.BooleanField(help_text=_('Did the squirrel approach you?'), default=False)
+    indifferent = models.BooleanField(help_text=_('Was the squirrel indifferent to you?'), default=False)
+    runs_from = models.BooleanField(help_text=_('Did the squirrel run from you?'), default=False)
     
     class Meta:
         get_latest_by = ['date']

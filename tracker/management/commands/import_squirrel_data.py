@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from tracker.models import Sighting
-from datetime import datetime
+from datetime import datetime, date
 
 import csv
 
@@ -31,6 +31,11 @@ class Command(BaseCommand):
             for row in my_reader:
 
                 date_formatted=datetime.strptime(row['Date'], '%m%d%Y').date()
+
+                #Ensure date is not in future
+                if date_formatted > date.today():
+                    self.stdout.write("Discarded entry: %s -> Cannot have future date for sighting" % row['Unique Squirrel ID'])
+                    continue
             
                 try:
                     Sighting.objects.create(
