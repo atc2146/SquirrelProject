@@ -1,3 +1,5 @@
+"""Definitions of Django 'views' for handling web requests."""
+
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.db.models import Count
@@ -7,7 +9,6 @@ from django.views import generic
 
 from .models import Sighting
 from .forms import SightingForm
-# Create your views here
 
 
 class SightingIndexView(generic.ListView):
@@ -24,13 +25,14 @@ class SightingIndexView(generic.ListView):
     :template:`tracker/index.html`
 
     """
-    #context_object_name = 'sighting_list'  # Default: object_list or <model_name>_list (i.e. sighting_list)
+    
     template_name = 'tracker/index.html'# Default: <app_label>/<model_name>_list.html
     paginate_by = 3500
     queryset = Sighting.objects.order_by('-date') # Specifying the queryset is the same as specyfying the model
     
 
 def map(request):
+    """Renders web request fro diplaying map and squirrel sightings"""
     template = loader.get_template('tracker/map.html')
     sightings = Sighting.objects.all()[:100]
     context = {'sightings' : sightings,}
@@ -38,18 +40,20 @@ def map(request):
 
 
 class SightingCreateView(generic.CreateView):
+    """Renders web request for creating a new squirrel sighting"""
     template_name = 'tracker/add.html'
     form_class = SightingForm
+    def get_success_url(self):
+        return reverse('tracker:index')
 
 
 class SightingUpdateView(generic.UpdateView):
+    """Handle web requests for updating the Sightings View"""
     model = Sighting
-    fields = '__all__'#('unique_squirrel_id',)
+    fields = '__all__'
     template_name = 'tracker/update.html'
     slug_field = 'unique_squirrel_id'
     slug_url_kwarg = 'unique_squirrel_id'
-    #success_url = reverse_lazy('tracker:index') #change
-    #context_object_name = 'sighting'
 
     def form_valid(self, form):
         """If the form is valid"""
@@ -61,22 +65,16 @@ class SightingUpdateView(generic.UpdateView):
             return HttpResponseRedirect(reverse('tracker:index', args=()))
 
     def get_success_url(self):
-        """Return the URL to redirect to after processing a valid form."""
-        unique_squirrel_id = self.get_object().unique_squirrel_id
-        url = reverse_lazy('tracker:update', args=(unique_squirrel_id,))
-        return url
+        return reverse('tracker:index')
 
-    # user defined function
     def update_instance(self, valid_data):
+        """Update sighting instance with new data."""
         print(valid_data)
         pass
 
-#rewrite this? is it done?
-#use generic view?
+
 def stats(request):
-    """
-    docstring to be completed
-    """
+    """Handle display of sighting statistics."""
     sightings_total = Sighting.objects.count()
     sightings_adult = Sighting.objects.filter(age='Adult').count()
     sightings_juvenile = Sighting.objects.filter(age='Juvenile').count()
@@ -84,7 +82,6 @@ def stats(request):
     percent_juvenile = round(sightings_juvenile/sightings_total * 100)
    
     # handle when nothing in db
-    # if  no records  first() will return None, latest() will raise DoesNotExist exception
     try:
         latest_date = Sighting.objects.order_by('date').latest('date').date
     except Exception as e:
@@ -92,7 +89,6 @@ def stats(request):
 
     earliest_date = Sighting.objects.order_by('date').earliest().date
     most_common_date_query = Sighting.objects.values('date').annotate(total=Count('date')).order_by('-total')[0]
-    #most_common_date = Sighting.objects.annotate(c=Count('date')).order_by('-c')[:1]
 
     running_true = Sighting.objects.filter(running=True).count()
     running_false = Sighting.objects.filter(running=False).count()

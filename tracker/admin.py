@@ -1,7 +1,7 @@
+"""Class definition for Sighting Admin"""
+
 from django.contrib import admin
 from .models import Sighting
-
-# Register your models here.
 
 
 class SightingAdmin(admin.ModelAdmin):

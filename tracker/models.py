@@ -1,16 +1,25 @@
+"""Definition of Sighting model for storing squirrel sightings in db"""
+
 from django.db import models
 from django.urls import reverse
 #from django.forms import ModelForm
 from django.utils.translation import gettext as _
+from datetime import datetime, date
+from django.core.exceptions import ValidationError
+#from django.urls import reverse
+#from .views import SightingIndexView
 
+def validate_date(date):
+    """Ensure date entered is valid and not in the future"""
+    if date > date.today():
+        raise ValidationError("Date cannot be in the past")
 
 
 class Sighting(models.Model):
     """
-    Sighting model for storing squirrel sightings information in db
+    Sighting model for storing squirrel sightings information in db.
 
     **Model Fields**
-
     Latitude
     Longitude
     Unique Squirrel ID
@@ -48,7 +57,6 @@ class Sighting(models.Model):
 
     AM = 'AM'
     PM = 'PM'
-
     SHIFT_CHOICES = (
         (AM, 'AM'),
         (PM, 'PM'),
@@ -58,12 +66,16 @@ class Sighting(models.Model):
             help_text=_('Time of sighting'),
             max_length=2,
             choices=SHIFT_CHOICES,
-            blank=True,
+            blank=False,
             #null=True,
             default='',
             )
 
-    date = models.DateField('date sighted')
+    date = models.DateField(
+        help_text=_('date sighted'), 
+        blank=False,
+        default=None, 
+        validators=[validate_date])
 
     ADULT = 'Adult'
     JUVENILE = 'Juvenile'
@@ -149,12 +161,10 @@ class Sighting(models.Model):
     class Meta:
         get_latest_by = ['date']
 
-    
-    # path upon successfull CreateView
-    # def get_absolute_url(self):
-    #    return reverse('tracker:update', args=[self.unique_squirrel_id])
-
     def __str__(self):
         return self.unique_squirrel_id
 
+#    def get_absolute_url(self):
+#        from django.urls import reverse
+#        return reverse('SightingIndexView', args=[str(self.id)])
 
