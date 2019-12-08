@@ -1,3 +1,8 @@
+"""Definition of command line function 'import_squirrel_data'.
+
+Funciton import squirrel data sighting from a CSV, specified as the first argument, to database.  
+"""
+
 from django.core.management.base import BaseCommand
 from tracker.models import Sighting
 from datetime import datetime, date
@@ -13,11 +18,6 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('file_path', type=str, help='The file path to be imported')
 
-    #def handle(self, *args, **kwargs):
-    #    path = kwargs['file_path']
-    #    self.stdout.write("File path: %s" % path)
-
-    # FINISH WRITING THIS FUNCTION TO IMPLEMENT THE ACTION STUFF
     def handle(self, *args, **kwargs):
         count=0
         path = kwargs['file_path']

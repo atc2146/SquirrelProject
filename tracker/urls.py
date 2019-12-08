@@ -1,3 +1,5 @@
+"""Definition for URLS and handling their requests to a view."""
+
 from django.urls import path
 from . import views
 
