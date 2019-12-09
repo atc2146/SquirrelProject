@@ -15,4 +15,5 @@ Project Group 69, Section 2
 UNIs: [atc2146, mds2252]
 
 ## Link to the server
-TO BE ADDED
+https://instance-1-255500.appspot.com/sightings 
+
