@@ -1,9 +1,11 @@
 """Definition of export_squirrel_data command line argument. Returns CSV of fields in db"""
 
-from django.core.management.base import BaseCommand, CommandError
-from tracker.models import Sighting
 import csv
 import sys
+
+from django.core.management.base import BaseCommand, CommandError
+
+from tracker.models import Sighting
 
 class Command(BaseCommand):
     """

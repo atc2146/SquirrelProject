@@ -83,7 +83,7 @@
 
 	<br>
 
-	<form action="{% url 'tracker:add' %}" method="post">
+	<form method="post">
 			{% csrf_token %}
 			{{ form.as_p }}
 	   <br>
