@@ -2,7 +2,6 @@
 
 from django.apps import AppConfig
 
-
 class TrackerConfig(AppConfig):
     """Define tracker app"""
     name = 'tracker'

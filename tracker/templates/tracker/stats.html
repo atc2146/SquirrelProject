@@ -95,7 +95,10 @@
 </div>
 
 <div class="container">
-  <div class="card-deck mb-3 text-center">
+{% if has_no_sightings %}
+<p>There are no sightings. Please add one.</p>
+{% else %}
+   <div class="card-deck mb-3 text-center">
     <div class="card mb-4 shadow-sm">
       <div class="card-header">
         <h4 class="my-0 font-weight-normal">Sightings</h4>
@@ -104,8 +107,8 @@
         <h1 class="card-title pricing-card-title">{{sightings_total}} <small class="text-muted">squirrels</small></h1>
         <ul class="list-unstyled mt-3 mb-4">
 		  <li>Age Distribution</li>
-          <li>{{sightings_adult}} Adults ({{percent_adult}}% of total)</li>
-          <li>{{sightings_juvenile}} Juvenile ({{percent_juvenile}}% of total)</li>
+          <li>{{sightings_adult}} Adults </li>
+          <li>{{sightings_juvenile}} Juvenile </li>
         </ul>
       </div>
     </div>
@@ -117,6 +120,7 @@
         <ul class="list-unstyled mt-3 mb-4">
           <li>Earliest sighting: {{earliest_date}}</li>
           <li>Most recent sighting: {{latest_date}}</li>
+
           <li>Most common sighting date(s): {{most_common_date}} ({{most_common_date_count}} times)</li>
         </ul>
       </div>
@@ -162,7 +166,7 @@
 
 	
   </div>
-
+{% endif %}
 
 </div>
 

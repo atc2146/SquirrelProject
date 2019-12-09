@@ -1,14 +1,14 @@
-"""Definitions of Django 'views' for handling web requests."""
+"""Definitions of Django views for handling web requests."""
 
-from django.shortcuts import render, get_object_or_404
-from django.template import loader
 from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.template import loader
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from .models import Sighting
 from .forms import SightingForm
+from .models import Sighting
 
 
 class SightingIndexView(generic.ListView):
@@ -25,18 +25,20 @@ class SightingIndexView(generic.ListView):
     :template:`tracker/index.html`
 
     """
-    
-    template_name = 'tracker/index.html'# Default: <app_label>/<model_name>_list.html
+    # Default: <app_label>/<model_name>_list.html
+    template_name = 'tracker/index.html'
     paginate_by = 3500
-    queryset = Sighting.objects.order_by('-date') # Specifying the queryset is the same as specyfying the model
+    # Specifying the queryset is the same as specyfying the model
+    queryset = Sighting.objects.order_by('-date')
     
 
 def map(request):
-    """Renders web request fro diplaying map and squirrel sightings"""
-    template = loader.get_template('tracker/map.html')
+    """Renders web request from diplaying map and squirrel sightings"""
     sightings = Sighting.objects.all()[:100]
-    context = {'sightings' : sightings,}
-    return HttpResponse(template.render(context, request))
+    context = {
+        'sightings' : sightings,
+        }
+    return render(request, 'tracker/map.html', context)
 
 
 class SightingCreateView(generic.CreateView):
@@ -54,58 +56,36 @@ class SightingUpdateView(generic.UpdateView):
     template_name = 'tracker/update.html'
     slug_field = 'unique_squirrel_id'
     slug_url_kwarg = 'unique_squirrel_id'
+    success_url = reverse_lazy('tracker:index')
 
     def form_valid(self, form):
         """If the form is valid"""
-        if 'update_sighting' in self.request.POST:
-            self.update_instance(form.cleaned_data)
-            return super(SightingUpdateView,self).form_valid(form)
-        elif 'delete_sighting' in self.request.POST:
-            form.instance.delete()
-            return HttpResponseRedirect(reverse('tracker:index', args=()))
-
-    def get_success_url(self):
-        return reverse('tracker:index')
-
-    def update_instance(self, valid_data):
-        """Update sighting instance with new data."""
-        print(valid_data)
-        pass
+        return super(SightingUpdateView, self).form_valid(form)
 
 
 def stats(request):
     """Handle display of sighting statistics."""
-    sightings_total = Sighting.objects.count()
-    sightings_adult = Sighting.objects.filter(age='Adult').count()
-    sightings_juvenile = Sighting.objects.filter(age='Juvenile').count()
-    percent_adult = round(sightings_adult/sightings_total * 100)    
-    percent_juvenile = round(sightings_juvenile/sightings_total * 100)
-   
+
     # handle when nothing in db
     try:
+        sightings_total = Sighting.objects.count()
+        sightings_adult = Sighting.objects.filter(age='Adult').count()
+        sightings_juvenile = Sighting.objects.filter(age='Juvenile').count()        
+        most_common_date_query = Sighting.objects.values('date').annotate(total=Count('date')).order_by('-total')[0]
         latest_date = Sighting.objects.order_by('date').latest('date').date
-    except Exception as e:
-        self.stdout('No records in database:\n' + str(e))
-
-    earliest_date = Sighting.objects.order_by('date').earliest().date
-    most_common_date_query = Sighting.objects.values('date').annotate(total=Count('date')).order_by('-total')[0]
-
-    running_true = Sighting.objects.filter(running=True).count()
-    running_false = Sighting.objects.filter(running=False).count()
-
-    chasing_true = Sighting.objects.filter(chasing=True).count()
-    chasing_false = Sighting.objects.filter(chasing=False).count()
-
-    climbing_true = Sighting.objects.filter(climbing=True).count()
-    climbing_false = Sighting.objects.filter(climbing=False).count()    
-
-
-    context = {
+        earliest_date = Sighting.objects.order_by('date').earliest().date
+        running_true = Sighting.objects.filter(running=True).count()
+        running_false = Sighting.objects.filter(running=False).count()
+        chasing_true = Sighting.objects.filter(chasing=True).count()
+        chasing_false = Sighting.objects.filter(chasing=False).count()
+        climbing_true = Sighting.objects.filter(climbing=True).count()
+        climbing_false = Sighting.objects.filter(climbing=False).count()    
+        has_no_sightings = False
+        context = {
+                'has_no_sightings': has_no_sightings,
                 'sightings_total': sightings_total,
                 'sightings_adult': sightings_adult,
                 'sightings_juvenile': sightings_juvenile,
-                'percent_adult': percent_adult,
-                'percent_juvenile': percent_juvenile,
                 'latest_date': latest_date,
                 'earliest_date': earliest_date,
                 'most_common_date': most_common_date_query['date'],
@@ -116,7 +96,14 @@ def stats(request):
                 'chasing_false': chasing_false,
                 'climbing_true': climbing_true,
                 'climbing_false': climbing_false,
+            }   
+    except Exception as e:
+        print('No records in database:\n' + str(e))
+        has_no_sightings = True
+        context = {
+                'has_no_sightings': has_no_sightings,
             }
+    
     return render(request, 'tracker/stats.html', context)
 
 
