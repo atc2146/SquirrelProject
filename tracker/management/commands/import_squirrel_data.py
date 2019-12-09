@@ -79,6 +79,6 @@ def convert_boolean(string):
 	Takes a string and returns a boolean representation
 	"""
 	if(string.lower()=="true"):
-		return True
+    	    return True
 	else:
-		return False	
+	    return False	

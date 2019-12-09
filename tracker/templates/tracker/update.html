@@ -42,10 +42,10 @@
 		/*body {
 		  padding-top: 5rem;
 		}*/
-		.starter-template {
-		  padding: 3rem 1.5rem;
-		  text-align: left;
-		}
+	.starter-template {
+		 padding: 3rem 1.5rem;
+		text-align: left;
+	}
     </style>
     <!-- Custom styles for this template -->
     <!--<link href="starter-template.css" rel="stylesheet">-->
@@ -79,14 +79,13 @@
 
   <div class="starter-template">
     <h1>Update Squirrel Sighting</h1>
-    <p class="lead">Modify values below and submit</p>
+    <p class="lead">Modify values below and submit (successful update will redirect to Home page)</p>
 
 	<form action="" method="post">
 			{% csrf_token %}
 			{{ form.as_p }}
 	   <br>
-	   <input type="submit" name="update_sighting" value="Update Sighting">
-	   <input type="submit" name="delete_sighting" value="Delete Sighting">
+	   <input type="submit" value="Update Sighting">
 	</form>
 
 

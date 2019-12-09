@@ -79,10 +79,9 @@
 
   <div class="starter-template">
     <h1>Add a sighting</h1>
-    <p class="lead">Enter values below and submit</p>
+    <p class="lead">Enter values below and submit (successful addition will redirect to home page)</p>
 
 	<br>
-	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 	<form action="{% url 'tracker:add' %}" method="post">
 			{% csrf_token %}
